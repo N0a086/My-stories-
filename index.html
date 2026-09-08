@@ -39,6 +39,9 @@
 
       /* Font size multiplier — toggled by JS */
       --fs-scale: 1;
+      /* Vertical column length in em (chars per column) — set per font size
+         by JS so a smaller font packs more characters into each column. */
+      --vcol: 25.5em;
 
       color-scheme: light dark;
     }
@@ -371,13 +374,16 @@
       width: max-content;
       /* 20 chars/column (genkōyōshi) ≈ 21em with 0.05em letter-spacing.
          Cap shorter than the viewport so columns don't touch top/bottom. */
-      height: min(calc(100dvh - 12rem), 20em);
+      height: min(calc(100dvh - 12rem), var(--vcol));
       font-family: var(--font-ja);
       line-height: var(--lh-body-ja);
       letter-spacing: 0.05em;
       text-align: start;
+      /* Standard Japanese line breaking (kinsoku) so each column fills
+         densely between characters — keep-all would only break at
+         punctuation, leaving columns half-empty. */
       line-break: strict;
-      word-break: keep-all;
+      word-break: normal;
       overflow-wrap: break-word;
     }
 
@@ -484,12 +490,16 @@
   // ===== Font size =====
   var FS_SIZES = [1, 1.12, 1.25];
   var FS_LABELS = ["a", "a", "A"];
+  // Vertical column length per font size: smaller font → more chars/column.
+  // Targets ≈ 24 / 20 / 17 chars (char advance ≈ 1.05em incl. letter-spacing).
+  var FS_VCOL = ["25.5em", "21.5em", "18em"];
   var fsIndex = parseInt(localStorage.getItem("mfw-fs") || "0", 10);
   if (fsIndex < 0 || fsIndex > 2) fsIndex = 0;
 
   function applyFontSize(i){
     fsIndex = i;
     document.documentElement.style.setProperty("--fs-scale", FS_SIZES[i]);
+    document.documentElement.style.setProperty("--vcol", FS_VCOL[i]);
     localStorage.setItem("mfw-fs", String(i));
     var btns = document.querySelectorAll(".font-size-btn");
     btns.forEach(function(b, j){ b.classList.toggle("active", j === i); });
