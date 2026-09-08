@@ -619,9 +619,9 @@
     currentVariant = variant;
     var story = currentStory;
 
-    $("reader-meta").textContent = story.author + ", " + story.year;
+    $("reader-meta").textContent = story.author;
     $("story-title").textContent = variant.title;
-    $("story-author").textContent = story.author + " (" + story.year + ")";
+    $("story-author").textContent = story.author;
 
     var content = $("story-content");
     content.setAttribute("data-lang", variant.lang);
