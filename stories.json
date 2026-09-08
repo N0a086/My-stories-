@@ -30,7 +30,16 @@
     "file": "ButsukariOjisan_Jp.md",
     "writingMode": "vertical",
     "excerpt": "学校の帰りの駅で、目の前でかの有名なぶつかりおじさんの実物を目撃した…",
-    "skipLines": 2
+    "skipLines": 2,
+    "translations": [
+      {
+        "lang": "en",
+        "title": "The habitat of Butsukari otoko",
+        "file": "ButsukariOtoko_En.md",
+        "writingMode": "horizontal",
+        "skipLines": 4
+      }
+    ]
   },
   {
     "id": "trust-only-you",

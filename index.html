@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MoFoWe Reading</title>
+  <title>My stories</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Shippori+Mincho:wght@400;700&display=swap" rel="stylesheet">
@@ -84,7 +84,6 @@
       font-weight: 400;
       color: var(--color-text-secondary);
       letter-spacing: 0.08em;
-      text-transform: uppercase;
       margin-block-end: max(3rem, 5vh);
     }
 
@@ -445,7 +444,7 @@
 </head>
 <body>
   <main class="landing" id="landing">
-    <p class="landing-title">MoFoWe Reading</p>
+    <p class="landing-title">My stories</p>
     <ul class="story-list" id="story-list"></ul>
   </main>
 
@@ -461,6 +460,7 @@
           <button class="font-size-btn" aria-label="Medium text">a</button>
           <button class="font-size-btn" aria-label="Large text">A</button>
         </div>
+        <button class="writing-mode-toggle" id="lang-toggle" aria-label="Switch language">EN</button>
         <button class="writing-mode-toggle" id="writing-mode-toggle" aria-label="Toggle writing direction">縦</button>
       </div>
     </header>
@@ -477,7 +477,8 @@
   <script>
 (function(){
   "use strict";
-  var stories=[], currentStory=null, currentWritingMode=null;
+  var stories=[], currentStory=null, currentVariant=null, currentWritingMode=null;
+  var LANG_LABELS = { ja: "日本語", en: "EN", fr: "FR" };
   function $(id){return document.getElementById(id)}
 
   // ===== Font size =====
@@ -582,40 +583,73 @@
     });
   }
 
+  // ===== Variants (original + translations) =====
+  function getVariants(story){
+    var base = {
+      lang: story.lang, title: story.title, file: story.file,
+      writingMode: story.writingMode, skipLines: story.skipLines
+    };
+    return [base].concat(story.translations || []);
+  }
+
   // ===== Open Story =====
   function openStory(index){
     var story = stories[index];
     if(!story) return;
     currentStory = story;
     history.pushState({story: index}, "", "#" + story.id);
+    // Always start in the original language
+    renderVariant(getVariants(story)[0]);
+    $("landing").style.display = "none";
+    $("reader").classList.add("active");
+  }
+
+  // Render one language variant of the current story
+  function renderVariant(variant){
+    currentVariant = variant;
+    var story = currentStory;
 
     $("reader-meta").textContent = story.author + ", " + story.year;
-    $("story-title").textContent = story.title;
+    $("story-title").textContent = variant.title;
     $("story-author").textContent = story.author + " (" + story.year + ")";
 
     var content = $("story-content");
-    content.setAttribute("data-lang", story.lang);
-    content.setAttribute("lang", story.lang);
+    content.setAttribute("data-lang", variant.lang);
+    content.setAttribute("lang", variant.lang);
 
-    // Show/hide writing mode toggle for Japanese
+    // \u7e26/\u6a2a toggle only makes sense for Japanese
     var wmToggle = $("writing-mode-toggle");
-    if (story.lang === "ja") {
-      wmToggle.classList.add("visible");
+    if (variant.lang === "ja") wmToggle.classList.add("visible");
+    else wmToggle.classList.remove("visible");
+
+    // Language toggle appears only when a translation exists; its label is
+    // the language you would switch TO.
+    var variants = getVariants(story);
+    var langToggle = $("lang-toggle");
+    if (variants.length > 1) {
+      var other = variants.filter(function(v){return v.lang !== variant.lang})[0];
+      langToggle.textContent = LANG_LABELS[other.lang] || other.lang.toUpperCase();
+      langToggle.classList.add("visible");
     } else {
-      wmToggle.classList.remove("visible");
+      langToggle.classList.remove("visible");
     }
 
-    // Determine writing mode: stored preference > manifest default
-    var storedWm = getStoredWritingMode(story.id);
-    var wm = storedWm || story.writingMode || "horizontal";
+    // Japanese honours the stored/default writing mode; every other language
+    // is always horizontal.
+    var wm;
+    if (variant.lang === "ja") {
+      wm = getStoredWritingMode(story.id) || variant.writingMode || "horizontal";
+    } else {
+      wm = "horizontal";
+    }
 
     // Load content, then apply writing mode
     $("story-body").innerHTML = '<p style="color:var(--color-text-secondary)">Loading\u2026</p>';
-    fetch(story.file).then(function(resp){
+    fetch(variant.file).then(function(resp){
       if(!resp.ok) throw new Error(resp.status);
       return resp.text();
     }).then(function(text){
-      $("story-body").innerHTML = mdToHtml(text, story.skipLines);
+      $("story-body").innerHTML = mdToHtml(text, variant.skipLines);
       applyWritingMode(wm);
     }).catch(function(){
       $("story-body").innerHTML =
@@ -623,15 +657,23 @@
         'Could not load story. Serve this directory over HTTP.<br>' +
         '<code style="font-size:var(--size-sm)">python -m http.server 8000</code></p>';
     });
+  }
 
-    $("landing").style.display = "none";
-    $("reader").classList.add("active");
+  // Switch to the other available language variant
+  function switchLanguage(){
+    if(!currentStory || !currentVariant) return;
+    var variants = getVariants(currentStory);
+    if(variants.length < 2) return;
+    var next = variants.filter(function(v){return v.lang !== currentVariant.lang})[0];
+    if(next) renderVariant(next);
   }
 
   // ===== Close Story =====
   function closeStory(){
     currentStory = null;
+    currentVariant = null;
     currentWritingMode = null;
+    $("lang-toggle").classList.remove("visible");
     $("reader").classList.remove("active");
     $("landing").style.display = "";
     $("scroll-hint").classList.remove("visible");
@@ -679,13 +721,16 @@
     if(currentStory) closeStory();
   });
 
-  // Writing mode toggle click
+  // Writing mode toggle click (Japanese only)
   $("writing-mode-toggle").addEventListener("click", function(){
-    if(!currentStory || currentStory.lang !== "ja") return;
+    if(!currentStory || !currentVariant || currentVariant.lang !== "ja") return;
     var newMode = currentWritingMode === "vertical" ? "horizontal" : "vertical";
     storeWritingMode(currentStory.id, newMode);
     applyWritingMode(newMode);
   });
+
+  // Language toggle click
+  $("lang-toggle").addEventListener("click", switchLanguage);
 
   // Font size button clicks
   document.querySelectorAll(".font-size-btn").forEach(function(btn, i){
