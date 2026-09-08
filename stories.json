@@ -1,27 +1,5 @@
 [
   {
-    "id": "to-build-a-fire",
-    "title": "To Build a Fire",
-    "author": "Jack London",
-    "year": 1908,
-    "lang": "en",
-    "file": "ToBuildAFire1908_Eng.md",
-    "writingMode": "horizontal",
-    "excerpt": "Day had broken cold and grey, exceedingly cold and grey…",
-    "skipLines": 4
-  },
-  {
-    "id": "la-parure",
-    "title": "La parure",
-    "author": "Guy de Maupassant",
-    "year": 1884,
-    "lang": "fr",
-    "file": "PublicDomainShortStory_02LaParure_Fr.md",
-    "writingMode": "horizontal",
-    "excerpt": "C’était une de ces jolies et charmantes filles, nées, comme par une erreur du destin…",
-    "skipLines": 2
-  },
-  {
     "id": "gokuchu-gourmet",
     "title": "獄中グルメレビューはミント味のあれ",
     "author": "ファブロ和亜ジェラルド",
@@ -33,17 +11,6 @@
     "skipLines": 3
   },
   {
-    "id": "hi-wo-taku",
-    "title": "火を焙く",
-    "author": "ジャック・ロンドン（訳：Claude / Jelaludo）",
-    "year": 1908,
-    "lang": "ja",
-    "file": "ToBuildAFire1908_Jp.md",
-    "writingMode": "vertical",
-    "excerpt": "寒く灰色の、途方もなく寒く灰色の夜明けだった…",
-    "skipLines": 6
-  },
-  {
     "id": "sayanaki-alec",
     "title": "鞘無き刃のアレク",
     "author": "ノア",
@@ -51,7 +18,7 @@
     "lang": "ja",
     "file": "35A086-8_Alec_Jp.md",
     "writingMode": "vertical",
-    "excerpt": "鞘無き刃のアレク——王国最後の砦にて。",
+    "excerpt": "暗雲が垂れ込める灰色の空の下、ブレーテ王国最後の砦、ヴォルト城の城壁には無数の矢が刺さり…",
     "skipLines": 0
   }
 ]
