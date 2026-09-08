@@ -2,7 +2,7 @@
   {
     "id": "gokuchu-gourmet",
     "title": "獄中グルメレビューはミント味のあれ",
-    "author": "ファブロ和亜ジェラルド",
+    "author": "ファブロノア",
     "year": 2026,
     "lang": "ja",
     "file": "ShortStoryJapaneseTest01Gourmet_Jp.md",
@@ -13,12 +13,56 @@
   {
     "id": "sayanaki-alec",
     "title": "鞘無き刃のアレク",
-    "author": "ノア",
+    "author": "ファブロノア",
     "year": 2025,
     "lang": "ja",
     "file": "35A086-8_Alec_Jp.md",
     "writingMode": "vertical",
     "excerpt": "暗雲が垂れ込める灰色の空の下、ブレーテ王国最後の砦、ヴォルト城の城壁には無数の矢が刺さり…",
     "skipLines": 0
+  },
+  {
+    "id": "butsukari-ojisan",
+    "title": "ぶつかりおじさんの生息地",
+    "author": "ファブロノア",
+    "year": 2025,
+    "lang": "ja",
+    "file": "ButsukariOjisan_Jp.md",
+    "writingMode": "vertical",
+    "excerpt": "学校の帰りの駅で、目の前でかの有名なぶつかりおじさんの実物を目撃した…",
+    "skipLines": 2
+  },
+  {
+    "id": "trust-only-you",
+    "title": "TRU5T 0NLY Y0U",
+    "author": "ファブロノア",
+    "year": 2025,
+    "lang": "ja",
+    "file": "TRU5T_0NLY_Y0U_Jp.md",
+    "writingMode": "vertical",
+    "excerpt": "淡々と６０階へ昇っていくエレベーターで一人。アリアは、口元を覆うスカーフの中で短くため息を吐いた…",
+    "skipLines": 2
+  },
+  {
+    "id": "hounds-on-the-border",
+    "title": "ハウンズ・オン・ザ・ボーダー",
+    "author": "ファブロノア",
+    "year": 2025,
+    "lang": "ja",
+    "file": "HoundsOnTheBorder_Jp.md",
+    "writingMode": "vertical",
+    "excerpt": "かつて人の喉を裂いていた手で、俺は空の酒瓶が十数本詰まった木箱を路地裏へと運んでいた…",
+    "skipLines": 2
+  },
+  {
+    "id": "senoku-bun-no-ni",
+    "title": "千億分の二の重さ",
+    "author": "ファブロノア",
+    "year": 2025,
+    "lang": "ja",
+    "file": "SenokuBunNoNi_Jp.md",
+    "writingMode": "vertical",
+    "excerpt": "「うちでは、そういう記憶処置は行っていません」——別れた妻の記憶を消したいという男が、記憶外来を訪れていた…",
+    "skipLines": 2
   }
 ]
