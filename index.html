@@ -352,12 +352,18 @@
       overflow-y: hidden;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      padding: max(1rem, 2vh) max(1.5rem, 5vw);
+      /* Breathing room around the text; end padding keeps the last
+         column off the screen edge and stays reachable while scrolling. */
+      padding: max(3rem, 8vh) max(2.5rem, 7vw);
       display: flex;
-      justify-content: center;
-      align-items: center;
+      /* "safe" centering: centered when the story fits, but falls back to
+         start alignment when it overflows — otherwise the overflowing half
+         is pushed to negative coordinates and can never be scrolled to. */
+      justify-content: safe center;
+      align-items: safe center;
       position: relative;
       min-height: calc(100dvh - 4rem);
+      scroll-padding-inline: max(2.5rem, 7vw);
     }
 
     .story-content.vertical {
@@ -365,8 +371,8 @@
       max-width: none;
       width: max-content;
       /* 20 chars/column (genkōyōshi) ≈ 21em with 0.05em letter-spacing.
-         Cap at that or viewport height, whichever is smaller. */
-      height: min(calc(100dvh - 7rem), 22em);
+         Cap shorter than the viewport so columns don't touch top/bottom. */
+      height: min(calc(100dvh - 12rem), 20em);
       font-family: var(--font-ja);
       line-height: var(--lh-body-ja);
       letter-spacing: 0.05em;
